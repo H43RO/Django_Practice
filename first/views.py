@@ -7,7 +7,6 @@ from datetime import datetime
 # Create your views here.
 
 def index(request):
-    template = loader.get_template('index.html')
     now = datetime.now()
 
     # 응답으로 전달하고 싶은 데이터
@@ -15,14 +14,14 @@ def index(request):
         'current_date' : now
     }
 
-    return HttpResponse(template.render(context, request))
+    return render(request, 'index.html', context)
 
 
 def select(request):
-    message = '수 하나를 입력해주세요'
-    return HttpResponse(message)
+    context  = {'number':4}
+    return render(request, 'select.html', context)
 
 
 def result(request):
-    message = "추첨 결과입니다."
-    return HttpResponse(message)
+    context  = {'numbers':[1,2,3,4,5,6]}
+    return render(request, 'result.html', context)
