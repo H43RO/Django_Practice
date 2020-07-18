@@ -11,6 +11,7 @@ REVIEW_POINT_CHOICES = (
     ('5', 5)
 )
 
+
 class ReviewForm(ModelForm):
     class Meta:
         model = Review
@@ -28,23 +29,31 @@ class ReviewForm(ModelForm):
 
         widgets = {
             'restaurant': forms.HiddenInput(),
-            'point' : forms.Select(choices=REVIEW_POINT_CHOICES)
+            'point': forms.Select(choices=REVIEW_POINT_CHOICES)
         }
 
 
 class RestaurantForm(ModelForm):
     class Meta:
         model = Restaurant
-        fields = ['name', 'address']
+        fields = ['name', 'address', 'image', 'password']
 
         labels = {
             'name': _('이름'),
-            'address' : _('주소'),
+            'address': _('주소'),
+            'image': _('이미지 URL'),
+            'password': _('게시물 비밀번호'),
         }
 
         help_texts = {
             'name': _('이름을 입력해주세요'),
-            'address': _('주소를 입력해주세요')
+            'address': _('주소를 입력해주세요'),
+            'image': _('이미지 URL을 입력해주세요'),
+            'password': _('비밀번호를 입력해주세요'),
+        }
+
+        widgets = {
+            'password': forms.PasswordInput()
         }
 
         error_messages = {
@@ -53,5 +62,16 @@ class RestaurantForm(ModelForm):
             },
             'address': {
                 'max_length': _('주소가 너무 길어요')
-            }
+            },
+            'password': {
+                'max_length': _('비밀번호 너무 길어요. 20자 이하로 해주세요!')
+            },
+            'image': {
+                'max_length': _('이미지 주소가 너무 길어요. 500자 이하로 해주세요!')
+            },
         }
+
+class UpdateRestaurantForm(RestaurantForm):
+    class Meta:
+        model = Restaurant
+        exclude = ['password'] # 업데이트 하지 않겠다
